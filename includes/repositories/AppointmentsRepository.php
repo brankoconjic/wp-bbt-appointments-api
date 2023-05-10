@@ -17,7 +17,7 @@ class AppointmentsRepository {
      * @param int $per_page The number of items per page.
      * @return array $appointments The appointments.
      */
-    public function get_appointments( int $page = 1, int $per_page = 40 ): array {
+    public function get_appointments( int $page = 1, int $per_page = 40, array $date ): array {
         $appointments = array();
         
         // Query args
@@ -26,6 +26,13 @@ class AppointmentsRepository {
             'post_status' => 'publish',
             'posts_per_page' => $per_page,
             'paged' => $page,
+            'date_query' => array(
+                array(
+                    'year'  => $date['year'],
+                    'month' => $date['month'],
+                    'day'   => $date['day'],
+                ),
+            ),
         );
     
         $appointments_query = new WP_Query( $args );
@@ -44,15 +51,22 @@ class AppointmentsRepository {
     }
 
     /**
-     * Get the appointment preference.
-     * 
-     * @param array $appointment_preference The appointment preference.
-     * @return array $appointment The appointment.
-     */
-    public function get_total_appointments():int {
+    * Get total appointments per specific date.
+    * 
+    * @param array $date Date.
+    * @return array $appointment The appointment.
+    */
+    public function get_total_appointments(array $date):int {
         $args = array(
             'post_type'   => 'appointments',
             'post_status' => 'publish',
+            'date_query' => array(
+                array(
+                    'year'  => $date['year'],
+                    'month' => $date['month'],
+                    'day'   => $date['day'],
+                ),
+            ),
         );
     
         $appointments_query = new WP_Query( $args );
@@ -60,12 +74,12 @@ class AppointmentsRepository {
         return $appointments_query->found_posts;
     }
     
-     /**
-     * Extract appointment details from the appointment string.
-     * 
-     * @param string $appt The appointment preference string.
-     * @return array|false - The new appointment array containing location(s), or false if the string is empty or not passed.
-     */
+    /**
+    * Extract appointment details from the appointment string.
+    * 
+    * @param string $appt The appointment preference string.
+    * @return array|false - The new appointment array containing location(s), or false if the string is empty or not passed.
+    */
     private function extract_appointment( string $appt ): array|false {
         if (empty($appt)) {
             return false;

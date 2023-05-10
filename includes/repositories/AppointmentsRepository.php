@@ -70,6 +70,8 @@ class AppointmentsRepository {
         );
     
         $appointments_query = new WP_Query( $args );
+        
+        wp_reset_postdata();
 
         return $appointments_query->found_posts;
     }

@@ -70,10 +70,11 @@ class AppointmentsRepository {
         );
     
         $appointments_query = new WP_Query( $args );
-        
+        $found_posts = $appointments_query->found_posts;
+
         wp_reset_postdata();
 
-        return $appointments_query->found_posts;
+        return $found_posts;
     }
     
     /**
@@ -82,7 +83,7 @@ class AppointmentsRepository {
     * @param string $appt The appointment preference string.
     * @return array|false - The new appointment array containing location(s), or false if the string is empty or not passed.
     */
-    private function extract_appointment( string $appt ): array|false {
+    private function extract_appointment( string $appt ) {
         if (empty($appt)) {
             return false;
         }

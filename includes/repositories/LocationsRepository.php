@@ -4,12 +4,6 @@ if (!defined('ABSPATH')) {
 }
 
 class LocationsRepository {
-    private $locations;
-    
-    public function __construct() {
-        $this->locations = $this->get_locations();
-    }
-    
     /**
      * Gets store id by name.
      * 
@@ -35,10 +29,6 @@ class LocationsRepository {
      * @return array $locations The locations.
      */
     public function get_locations() {
-        if ( $this->locations ) {
-            return $this->locations;
-        }
-        
         $locations = array();
         
         // Query args
@@ -60,6 +50,7 @@ class LocationsRepository {
             }
             
             wp_reset_postdata();
+            
         }
         
         return $locations;

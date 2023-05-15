@@ -12,8 +12,9 @@ class LocationsRepository {
      */
     public function get_store_id( string $location_name ): ?int {
         $location_id = null;
+        $locations = $this->get_locations();
         
-        foreach ($this->locations as $location) {
+        foreach ($locations as $location) {
             if ($location['title'] === $location_name) {
                 $location_id = $location['id'];
                 break;

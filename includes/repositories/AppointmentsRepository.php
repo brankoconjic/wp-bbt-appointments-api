@@ -54,7 +54,7 @@ class AppointmentsRepository {
     * Get total appointments per specific date.
     * 
     * @param array $date Date.
-    * @return array $appointment The appointment.
+    * @return int $appointment Total appointments count.
     */
     public function get_total_appointments(array $date):int {
         $args = array(
